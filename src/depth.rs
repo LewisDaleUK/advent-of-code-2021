@@ -1,9 +1,9 @@
-pub fn times_depth_increased(depths: &[i32]) -> i32 {
+pub fn times_depth_increased(depths: Vec<i32>) -> i32 {
     let mut last_depth = i32::MAX;
     let mut number_increases: i32 = 0;
 
-    for &depth in depths {
-        if (last_depth < depth) {
+    for depth in depths {
+        if last_depth < depth {
             number_increases += 1;
         }
 
@@ -16,7 +16,7 @@ pub fn times_depth_increased(depths: &[i32]) -> i32 {
 mod tests {
     #[test] 
     fn it_returns_7_increases() {
-        let depths: [i32; 10] = [
+        let depths: Vec<i32> = vec![
             199,
             200,
             208,
@@ -28,6 +28,6 @@ mod tests {
             260,
             263
         ];
-        assert_eq!(super::times_depth_increased(&depths), 7);
+        assert_eq!(super::times_depth_increased(depths), 7);
     }
 }
