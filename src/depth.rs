@@ -1,14 +1,22 @@
 pub fn times_depth_increased(depths: Vec<i32>) -> i32 {
-    let mut last_depth = i32::MAX;
+    let mut last_sum = i32::MAX;
     let mut number_increases: i32 = 0;
 
-    for depth in depths {
-        if last_depth < depth {
-            number_increases += 1;
-        }
+    let mut i = 0;
 
-        last_depth = depth;
+    while i < depths.len() - 2 {
+        if let [a, b, c] = depths[i..i+3] {
+            let sum = a + b + c;
+
+            if last_sum < sum {
+                number_increases += 1;
+            }
+
+            last_sum = sum;
+        }
+        i += 1;
     }
+    
     return number_increases;
 }
 
@@ -28,6 +36,6 @@ mod tests {
             260,
             263
         ];
-        assert_eq!(super::times_depth_increased(depths), 7);
+        assert_eq!(super::times_depth_increased(depths), 5);
     }
 }
