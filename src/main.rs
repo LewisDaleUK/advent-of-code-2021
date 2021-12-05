@@ -4,6 +4,7 @@ use std::path::Path;
 
 mod depth;
 mod position;
+mod binary;
 
 fn main() {
     let depths = read_depths();
@@ -13,8 +14,28 @@ fn main() {
     let instructions = read_directions();
     let (horizontal, depth) = position::calculate_position(instructions, 0, 0, 0);
     println!("{} final position", horizontal * depth);
+
+    let report = get_diagnostic_report();
+    let consumption = binary::power_consumption(report);
+
+    println!("Power Consumption: {}", consumption);
 }
 
+fn get_diagnostic_report() -> Vec<String> {
+    if let Ok(lines) = read_lines("./files/day_3_input.txt") {
+        let mut report: Vec<String> = Vec::new();
+
+        for line in lines {
+            if let Ok(l) = line {
+                report.push(l);
+            }
+        }
+
+        return report;
+    } else {
+        return vec![];
+    }
+}
 fn read_directions() -> Vec<(String, i32)> {
     if let Ok(lines) = read_lines("./files/day_2_input.txt") {
         let mut directions: Vec<(String, i32)> = Vec::new();

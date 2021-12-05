@@ -12,7 +12,7 @@ pub fn calculate_position(instructions: Vec<(String, i32)>, mut horizontal: i32,
         },
         "down" => aim += amount,
         "up" => aim -= amount,
-        _ => horizontal = horizontal
+        _ => ()
     };
 
     return calculate_position(Vec::from(&instructions[1..]), horizontal, depth, aim);
