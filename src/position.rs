@@ -1,4 +1,4 @@
-pub fn calculate_position(instructions: Vec<(String, i32)>, mut horizontal: i32, mut depth: i32) -> (i32, i32) {
+pub fn calculate_position(instructions: Vec<(String, i32)>, mut horizontal: i32, mut depth: i32, mut aim: i32) -> (i32, i32) {
     if instructions.len() == 0 {
         return (horizontal, depth);
     }
@@ -6,13 +6,16 @@ pub fn calculate_position(instructions: Vec<(String, i32)>, mut horizontal: i32,
     let (direction, amount) = &instructions[0];
 
     match direction.as_str() {
-        "forward" => horizontal += amount,
-        "down" => depth += amount,
-        "up" => depth -= amount,
+        "forward" => {
+            horizontal += amount;
+            depth += aim * amount;
+        },
+        "down" => aim += amount,
+        "up" => aim -= amount,
         _ => horizontal = horizontal
     };
 
-    return calculate_position(Vec::from(&instructions[1..]), horizontal, depth);
+    return calculate_position(Vec::from(&instructions[1..]), horizontal, depth, aim);
 }
 
 #[cfg(test)]
@@ -28,9 +31,9 @@ mod tests {
             (String::from("forward"), 2)
         ];
 
-        let (horizontal, depth) = super::calculate_position(instructions, 0, 0);
+        let (horizontal, depth) = super::calculate_position(instructions, 0, 0, 0);
 
         assert_eq!(horizontal, 15);
-        assert_eq!(depth, 10);
+        assert_eq!(depth, 60);
     }
 }

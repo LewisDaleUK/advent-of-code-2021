@@ -11,7 +11,7 @@ fn main() {
     println!("{}", times_increased);
 
     let instructions = read_directions();
-    let (horizontal, depth) = position::calculate_position(instructions, 0, 0);
+    let (horizontal, depth) = position::calculate_position(instructions, 0, 0, 0);
     println!("{} final position", horizontal * depth);
 }
 
