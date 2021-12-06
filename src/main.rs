@@ -16,9 +16,9 @@ fn main() {
     println!("{} final position", horizontal * depth);
 
     let report = get_diagnostic_report();
-    let consumption = binary::power_consumption(report);
+    let life_support = binary::life_support_rating(report);
 
-    println!("Power Consumption: {}", consumption);
+    println!("Life Support: {}", life_support);
 }
 
 fn get_diagnostic_report() -> Vec<String> {
