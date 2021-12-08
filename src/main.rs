@@ -25,8 +25,8 @@ fn main() {
     println!("Life Support: {}", life_support);
 
     let (numbers, boards) = get_bingo_game();
-    let final_score = bingo::find_winning_score(boards, numbers);
-    println!("Final Bingo Score: {}", final_score);
+    let last_score = bingo::find_last_winning_score(boards, numbers);
+    println!("Last Wining Bingo Score: {}", last_score);
 }
 
 fn get_diagnostic_report() -> Vec<String> {

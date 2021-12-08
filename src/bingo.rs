@@ -53,7 +53,7 @@ impl Board {
             return acc;
         };
         for i in 0..5 {
-            let horizontal = self.grid[0].iter().fold(0, accumulator);
+            let horizontal = self.grid[i].iter().fold(0, accumulator);
 
             scores.push(horizontal);
 
@@ -103,6 +103,23 @@ pub fn find_winning_score(mut boards: Vec<Board>, numbers: Vec<i32>) -> i32 {
     return 0;
 }
 
+pub fn find_last_winning_score(mut boards: Vec<Board>, numbers: Vec<i32>) -> i32 {
+    for number in numbers {
+        boards = boards.into_iter().map(|mut b| {
+            b.check_number(number);
+            return b;
+        }).collect();
+        
+        boards.sort_by_key(|f| f.score);
+
+        if boards[0].score == 5 {
+            return boards[0].unmarked_sum() * number
+        }
+    }
+
+    return 0;
+}
+
 #[cfg(test)]
 mod tests {
     #[test]
@@ -117,8 +134,12 @@ mod tests {
             ],
             score: 0
         };
-        board.check_number(9);
 
+        board.check_number(4);
+        assert_eq!(board.grid[1][3], (4, true));
+        assert_eq!(board.score, 1);
+
+        board.check_number(9);
         assert_eq!(board.grid[2][1], (9, true));
         assert_eq!(board.score, 1);
 
@@ -178,5 +199,37 @@ mod tests {
 
         let score = super::find_winning_score(boards, numbers);
         assert_eq!(score, 4512);
+    }
+
+    #[test]
+    fn it_finds_the_last_winner() {
+        let boards: Vec<super::Board> = vec![
+            super::Board::new([
+                [22, 13, 17, 11,  0],
+                [ 8,  2, 23,  4, 24],
+                [21,  9, 14, 16,  7],
+                [ 6, 10,  3, 18,  5],   
+                [ 1, 12, 20, 15, 19]
+            ]),
+            super::Board::new([
+               [ 3, 15,  0,  2, 22],
+               [ 9, 18, 13, 17,  5],
+               [19,  8,  7, 25, 23],
+               [20, 11, 10, 24, 14],
+               [14, 21, 16, 12,  6]
+            ]),
+            super::Board::new([
+                [14, 21, 17, 24,  4],
+                [10, 16, 15,  9, 19],
+                [18,  8, 23, 26, 20],
+                [22, 11, 13,  6,  5],
+                [ 2,  0, 12,  3,  7]
+            ])
+        ];
+
+        let numbers = vec![7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1];
+
+        let score = super::find_last_winning_score(boards, numbers);
+        assert_eq!(score, 1924);
     }
 }
